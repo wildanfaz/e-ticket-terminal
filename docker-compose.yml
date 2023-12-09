@@ -10,21 +10,21 @@ services:
       - ./migrations:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: go-template
+      MYSQL_DATABASE: e-ticket-terminal
     ports:
       - "3306:3306"
 
   # Golang application service
-  go-template:
+  e-ticket-terminal:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: go-template
+    container_name: e-ticket-terminal
     restart: always
     depends_on:
       - mysql
     environment:
       ECHO_PORT: ":1323"
-      MYSQL_DSN: "root:secret@tcp(host.docker.internal:3306)/go-template?parseTime=true"
+      MYSQL_DSN: "root:secret@tcp(host.docker.internal:3306)/e-ticket-terminal?parseTime=true"
     ports:
       - "1323:1323"

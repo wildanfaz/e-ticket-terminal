@@ -4,12 +4,14 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo/v4"
-	"github.com/wildanfaz/go-template/configs"
-	"github.com/wildanfaz/go-template/internal/constants"
-	"github.com/wildanfaz/go-template/internal/pkg"
-	"github.com/wildanfaz/go-template/internal/repositories"
-	"github.com/wildanfaz/go-template/internal/services/books"
-	"github.com/wildanfaz/go-template/internal/services/health"
+	"github.com/wildanfaz/e-ticket-terminal/configs"
+	"github.com/wildanfaz/e-ticket-terminal/internal/constants"
+	"github.com/wildanfaz/e-ticket-terminal/internal/middlewares"
+	"github.com/wildanfaz/e-ticket-terminal/internal/pkg"
+	"github.com/wildanfaz/e-ticket-terminal/internal/repositories"
+	"github.com/wildanfaz/e-ticket-terminal/internal/services/health"
+	"github.com/wildanfaz/e-ticket-terminal/internal/services/terminals"
+	"github.com/wildanfaz/e-ticket-terminal/internal/services/users"
 )
 
 func InitEchoRouter() {
@@ -23,15 +25,32 @@ func InitEchoRouter() {
 	log := pkg.InitLogger()
 
 	// repositories
-	booksRepo := repositories.NewBooksRepository(dbMySql)
+	usersRepo := repositories.NewUsersRepository(dbMySql)
+	terminalsRepo := repositories.NewTerminalsRepository(dbMySql)
 
 	// services
-	_ = books.NewService(booksRepo, log)
+	usersService := users.NewService(usersRepo, log)
+	terminalsService := terminals.NewService(terminalsRepo, usersRepo, log)
 
 	e := echo.New()
 
 	apiV1 := e.Group("/api/v1")
 	apiV1.GET("/health", health.HealthCheck)
+
+	// middlewares
+	auth := middlewares.Auth(usersRepo, log)
+
+	// users
+	users := apiV1.Group("/users")
+	users.POST("/register", usersService.Register)
+	users.POST("/login", usersService.Login)
+	users.POST("/topup", usersService.TopUp, auth)
+
+	// terminals
+	terminals := apiV1.Group("/terminals")
+	terminals.POST("", terminalsService.AddTerminal, auth)
+	terminals.POST("/transaction", terminalsService.AddTransaction, auth)
+	terminals.PUT("/transaction", terminalsService.UpdateTransaction, auth)
 
 	e.Logger.Fatal(e.Start(config.EchoPort))
 }

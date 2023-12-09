@@ -1,21 +1,21 @@
-package books
+package users
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/wildanfaz/go-template/internal/repositories"
+	"github.com/wildanfaz/e-ticket-terminal/internal/repositories"
 )
 
 type Service struct {
-	booksRepo repositories.BooksRepository
+	usersRepo repositories.UsersRepository
 	log       *logrus.Logger
 }
 
 func NewService(
-	booksRepo repositories.BooksRepository,
+	usersRepo repositories.UsersRepository,
 	log *logrus.Logger,
 ) *Service {
 	return &Service{
-		booksRepo: booksRepo,
+		usersRepo: usersRepo,
 		log:       log,
 	}
 }

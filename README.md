@@ -1,12 +1,13 @@
-# Go Template
+# E-Ticket Terminal
 
-Simple golang project template
+Simple e-ticket-terminal app, built with this [template](https://github.com/wildanfaz/go-template)
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Commands](#commands)
+- [Documentations](#documentations)
 
 ## Installation
 
@@ -36,13 +37,13 @@ Simple golang project template
 3. Clone the repository:
 
     ```bash
-    git clone https://github.com/wildanfaz/go-template.git
+    git clone https://github.com/wildanfaz/e-ticket-terminal.git
     ```
 
 4. Change to the project directory:
 
     ```bash
-    cd go-template
+    cd e-ticket-terminal
     ```
 
 ## Usage
@@ -64,3 +65,23 @@ Simple golang project template
     ```bash
     make start
     ```
+
+3. Migrate tables
+    ```
+    make migrate
+    ```
+
+4. Rollback tables
+    ```
+    make rollback
+    ```
+
+## Documentations
+
+1. [System Design or Flowchart](https://drive.google.com/file/d/1W2v4QLf-vAwTAnOga2z-2Bww7ZEEhJ4l/view)
+
+2. [Database Design or Entity Relationship Diagram](https://dbdiagram.io/d/Terminals-6573204b56d8064ca0a7d54a)
+
+3. [Postman](https://documenter.getpostman.com/view/22978251/2s9YkgE62o)
+
+4. [Current Database Seed](https://github.com/wildanfaz/e-ticket-terminal/tree/main/migrations)

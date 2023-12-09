@@ -6,8 +6,8 @@ type Response struct {
 	Data    any    `json:"data,omitempty"`
 }
 
-func NewResponse() *Response {
-	return &Response{
+func NewResponse() Response {
+	return Response{
 		Error:   false,
 		Message: "Unknown",
 	}
